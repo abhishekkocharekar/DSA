@@ -1,3 +1,0 @@
-#ARRAYS
-Boyer-Moore Majority Voting Algorithm - Majority Element
-Equilibrium Point exercise problem
