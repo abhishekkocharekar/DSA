@@ -1,22 +1,83 @@
-let solution = (arr) => {
-    let res = [];
-    arr.sort(sortFunction);
-    let start = arr[0];
-    for(let i=1;i<arr.length;i++){
-        if(arr[i-1][1] < arr[i][0] || arr[i-1][1] > arr[i][1]){
-            res.push([Math.min(start[0],arr[i-1][0]),Math.max(arr[i-1][1],start[1])]);
-            start = arr[i];
-        }
-    }
-    if(start !== arr[arr.length - 1]){
-        res.push([Math.min(start[0],arr[arr.length-1][0]),Math.max(arr[arr.length-1][1],start[1])]);
-    } else {
-        res.push(arr[arr.length-1]);
-    }
-    return res;
+//{ Driver Code Starts
+//Initial Template for javascript
+'use strict';
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+let inputString = '';
+let currentLine = 0;
+
+process.stdin.on('data', inputStdin => {
+    inputString += inputStdin;
+});
+
+process.stdin.on('end', _ => {
+    inputString = inputString.trim().split('\n').map(string => {
+        return string.trim();
+    });
+    
+    main();    
+});
+
+function readLine() {
+    return inputString[currentLine++];
 }
 
-// console.log(solution([[1,3],[2,4],[5,7],[6,8]]));
-// console.log(solution([[7,9],[6,10],[4,5],[1,3],[2,4]]));
-// console.log(solution([[5,10],[3,15],[18,30],[2,7]]));
-console.log(solution([[6,8],[1,9],[2,4],[4,7]]));
+function main() {
+    let t = parseInt(readLine());
+    let i = 0;
+    for(;i<t;i++)
+    {
+        let n = parseInt(readLine());
+        let arr = new Array(n);
+        let dep = new Array(n);
+        let input_ar1 = readLine().split(' ').map(x=>parseInt(x));
+        for(let i=0;i<n;i++)
+            arr[i] = input_ar1[i];
+        let input_ar2 = readLine().split(' ').map(x=>parseInt(x));
+        for(let i=0;i<n;i++)
+            dep[i] = input_ar2[i];
+        let obj = new Solution();
+        let res = obj.findPlatform(arr, dep, n);
+        console.log(res);
+    }
+}
+// } Driver Code Ends
+
+
+//User function Template for javascript
+
+/**
+ * @param {number[]} arr
+ * @param {number[]} dep
+ * @param {number} n
+ * @returns {number}
+*/
+
+class Solution {
+    //Function to find the minimum number of platforms required at the
+    //railway station such that no train waits.
+    findPlatform(arr, dep, n)
+    {
+        arr.sort(function(a,b){return a-b});
+        dep.sort(function(a,b){return a-b});
+        let count = 1;
+        let max = 1;
+        let j = 0;
+        let i = 1;
+        while(i<n && j<n){
+            if(arr[i] <= dep[j]){
+                count++;
+                i++;
+            } else {
+                count--;
+                j++;
+            }
+            if(count > max){
+                max = count;
+            }
+        }
+        return max;
+    }
+}
