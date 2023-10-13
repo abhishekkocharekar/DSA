@@ -1,20 +1,24 @@
-const solution = (arr) => {
-    let waterStored = 0;
-    let leftMax = [], rightMax = [];
-    leftMax[0] = arr[0];
-    let i = 0;
-    for (i = 1; i < arr.length; i++) {
-        leftMax[i] = Math.max(arr[i], leftMax[i - 1]);
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+var trap = function(height) {
+    let maxL = [height[0]];
+    let maxR = [];
+    maxR[height.length-1] = height[height.length-1];
+    for(let i=1; i<height.length; i++){
+        maxL[i] = Math.max(maxL[i-1],height[i-1]);
     }
-    rightMax[arr.length - 1] = arr[arr.length - 1];
-    for (i = arr.length - 2; i >= 0; i--) {
-        rightMax[i] = Math.max(arr[i], rightMax[i + 1]);
+    for(let i=height.length-2; i>=0; i--){
+        maxR[i] = Math.max(maxR[i+1],height[i+1]);
     }
-    for (i = 0; i < arr.length; i++) {
-        waterStored = waterStored + (Math.min(leftMax[i], rightMax[i]) - arr[i]);
+    let min = [];
+    for(let i=0; i<height.length; i++){
+        min[i] = Math.min(maxL[i],maxR[i]);
     }
-    return waterStored;
-}
-
-
-console.log(solution([3, 0, 1, 2, 5]))
+    let res = 0;
+    for(let i=0; i<height.length; i++){
+        if(min[i] - height[i] > 0) res = res + min[i] - height[i];
+    }
+    return res;
+};

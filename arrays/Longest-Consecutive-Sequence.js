@@ -3,32 +3,25 @@
  * @return {number}
  */
 var longestConsecutive = function(nums) {
-    if(nums.length === 0) return 0;
-    if(nums.length === 1) return 1;
-    let obj = {};
-    for(let i=0; i<nums.length; i++){
-        if(obj[nums[i]]) {
-            nums.splice(i,1);
-            i--;
-            continue;
-        } else {
-            obj[nums[i]] = 1;
+    let maxScore = 0;
+    const numSet = new Set(nums);         /* Time O(N) | Space O(N) */
+    console.log(numSet);
+
+    for (const num of [ ...numSet ]) {    /* Time O(N) */
+        const prevNum = num - 1;
+
+        if (numSet.has(prevNum)) continue;/* Time O(N) */
+
+        let [ currNum, score ] = [ num, 1 ];
+
+        const isStreak = () => numSet.has(currNum + 1)
+        while (isStreak()) {              /* Time O(N) */
+            currNum++;
+            score++;
         }
-    };
-    for(let i=0; i<nums.length; i++){
-        if(obj[nums[i]-1]){
-            obj[nums[i]]++;
-        } 
-        if(obj[nums[i]+1]){
-            obj[nums[i]]++;
-        }
-    };
-    let max = 0;
-    let ans = 2;
-    for(k in obj){
-        if(obj[k] > max) max = obj[k];
-        if(obj[k] === 3) ans++;
+
+        maxScore = Math.max(maxScore, score);
     }
-    if(max < 3) return max;
-    return ans;
+
+    return maxScore;
 };
